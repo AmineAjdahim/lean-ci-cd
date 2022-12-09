@@ -1,0 +1,15 @@
+---
+- name: "Build containers with ansible playbook"
+  hosts: localhost
+  tasks:
+  - name: stop docker container 
+    command: docker stop container-ansible
+  - name: remove docker container 
+    command: docker rm container-ansible
+  - name: remove docker image 
+    command: docker rmi newimage-ansible 
+    ignore_errors: yes
+  - name: build docker image from dockerfile 
+    command: docker build -t newimage-ansible .
+  - name: run docker container from image
+    command: docker run --name container-ansible -d -p 8080:8080 newimage-ansible
